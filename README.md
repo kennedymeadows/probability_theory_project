@@ -1,2 +1,2 @@
-# probability_theory_project
-MATH 407 - Probability Theory - Final Project
+# MATH 407 - Probability Theory - Final Project
+
