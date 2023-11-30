@@ -39,4 +39,3 @@ Estimated area of Africa with 1000000 points: 12,354,622.00 square kilometers (r
 This was a far more challenging problem for me. I started out with some tests of randomness I found online and built out a system capable of running multiple tests and prescribing different weights based on the lengths of the binary strings entered, as some of these tests are better suited for longer strings. I also added a test for the longest run of 1s and 0s in a row, as this is a good indicator of randomness. I then ran my tests on a few different strings of varying lengths and weights and pretty mixed results.
 
 Afterwards I found [a stack overflow post](https://stackoverflow.com/questions/3097949/how-can-i-determine-the-statistical-randomness-of-a-binary-string) that had a test I was able to adapt which seems to have done a good job of determining the randomness of such short strings. I feel like this project would be cool to test on a larger scale.
-```
