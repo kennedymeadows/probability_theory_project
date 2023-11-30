@@ -21,7 +21,7 @@ def plot_points_with_plotly(x, y, z, highlight=None):
         for i, (xi, yi, zi) in enumerate(zip(x, y, z)):
             if highlight in ['antarctica', 'both'] and yi < -0.885:  # Adjust for Antarctica
                 color[i] = 'red'
-            if (10/180 < xi < 40/180 and -30/90 < yi < 0 and zi > 0) or (-10/180 < xi < 40/180 and 0 < yi < 30/90 and zi > 0):
+            if highlight in ['africa', 'both'] and ((10/180 < xi < 40/180 and -30/90 < yi < 0 and zi > 0) or (-10/180 < xi < 40/180 and 0 < yi < 30/90 and zi > 0)):
                 color[i] = 'red'
 
     fig = go.Figure(data=[go.Scatter3d(x=x, y=y, z=z, mode='markers',
