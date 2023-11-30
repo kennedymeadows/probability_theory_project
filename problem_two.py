@@ -77,16 +77,15 @@ def interpret_results(sequence, freq, runs, autocorr, longest_run_mean, poker_te
         'autocorr': 0.2,
         'longest_run': 0.2,
         'poker_test': 0.2,
-        'entropy': 0.3  # Increased weight for entropy
+        'entropy': 0.3 
     }
 
-    # Adjust thresholds based on previous findings
-    freq_threshold = 0.2  # Allow for slight imbalance
+    freq_threshold = 0.2  
     runs_threshold = 15 if sequence_length < 100 else 30  # Lower threshold for shorter sequences
-    autocorr_threshold = 0.15  # Slightly relaxed
+    autocorr_threshold = 0.15 
     longest_run_mean_threshold = 3 if sequence_length < 100 else 4  # Adjusted for length
-    poker_test_threshold = 3.0  # Increased threshold
-    entropy_threshold = 0.85  # Lowered for better sensitivity
+    poker_test_threshold = 3.0 
+    entropy_threshold = 0.85  
 
     # Calculate weighted score
     score = 0

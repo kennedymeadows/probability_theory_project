@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 # Constants
 EARTH_SURFACE_AREA = 510.1e6  # in square kilometers
-NUM_POINTS = 10000  # Number of points to generate
+NUM_POINTS = 10000 
 
 def generate_sphere_points(num_points):
     theta = np.random.uniform(0, 2 * np.pi, num_points)
@@ -19,7 +19,7 @@ def plot_points_with_plotly(x, y, z, highlight=None):
 
     if highlight:
         for i, (xi, yi, zi) in enumerate(zip(x, y, z)):
-            if highlight in ['antarctica', 'both'] and yi < -0.885:  # Adjust for Antarctica
+            if highlight in ['antarctica', 'both'] and yi < -0.885:
                 color[i] = 'red'
             if highlight in ['africa', 'both'] and ((10/180 < xi < 40/180 and -30/90 < yi < 0 and zi > 0) or (-10/180 < xi < 40/180 and 0 < yi < 30/90 and zi > 0)):
                 color[i] = 'red'
