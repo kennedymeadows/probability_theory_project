@@ -65,6 +65,53 @@ def poker_test(sequence, block_size=4):
     test_statistic = (2**block_size) * sum(v**2 for v in block_counts.values()) / num_blocks - num_blocks
     return test_statistic
 
+####################################################################################################
+####################### Random/ Non-Random Sequence Generators #####################################
+####################################################################################################
+
+def generate_champernowne(length):
+    """ Generate a binary string representing the Champernowne constant up to a certain length """
+    champernowne = ""
+    num = 1
+    while len(champernowne) < length:
+        champernowne += bin(num)[2:]  # Remove '0b' prefix from binary representation
+        num += 1
+    return champernowne[:length]
+
+def is_prime(n):
+    """ Check if a number is prime """
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+def generate_copeland_erdos(length):
+    """ Generate a binary string representing the Copeland-Erdös constant up to a certain length """
+    copeland_erdos = ""
+    num = 2  # Start from the first prime number
+    while len(copeland_erdos) < length:
+        if is_prime(num):
+            copeland_erdos += bin(num)[2:]  # Remove '0b' prefix from binary representation
+        num += 1
+    return copeland_erdos[:length]
+
+def generate_non_random_binary(length, pattern="1100"):
+    """ Generate a non-random binary string with a specified pattern """
+    return (pattern * (length // len(pattern) + 1))[:length]
+
+
+####################################################################################################
+##################################### Sequence Analyzer ############################################
+####################################################################################################
+
 
 def interpret_results(sequence, freq, runs, autocorr, longest_run_mean, poker_test_result, entropy):
     """ Interpret the results and provide a conclusion about randomness """
@@ -85,7 +132,7 @@ def interpret_results(sequence, freq, runs, autocorr, longest_run_mean, poker_te
     autocorr_threshold = 0.15 
     longest_run_mean_threshold = 3 if sequence_length < 100 else 4  # Adjusted for length
     poker_test_threshold = 3.0 
-    entropy_threshold = 0.85  
+    entropy_threshold = 0.7  
 
     # Calculate weighted score
     score = 0
@@ -96,12 +143,14 @@ def interpret_results(sequence, freq, runs, autocorr, longest_run_mean, poker_te
     score += weights['poker_test'] if poker_test_result < poker_test_threshold else 0
     score += weights['entropy'] if entropy > entropy_threshold else 0
 
-    return f"The sequence is likely random. The score was {score}" if score >= 0.4 else f"The sequence is likely not random. The score was {score}"
+    return f"The sequence is likely random. The score was {score}" if score >= 0.6 else f"The sequence is likely not random. The score was {score}"
 
-def analyze_sequence(sequence):
+def analyze_sequence(sequence, print_sequence=True):
     """ Analyze the sequence with various tests and print results """
     sequence = sequence.replace(" ", "")  # Remove spaces
-    print("Analyzing sequence:", sequence)
+    if print_sequence:
+        print("Analyzing sequence:", sequence)
+    
     freq_result = monobit_test(sequence)
     runs_result = runs_test(sequence)
     autocorr_result = autocorrelation_test(sequence)
@@ -112,25 +161,41 @@ def analyze_sequence(sequence):
     print("Frequency (Monobit) Test Result:", freq_result)
     print("Runs Test Result:", runs_result)
     print("Autocorrelation Test Result (Shift=2):", autocorr_result)
-    print("Longest Run of Ones in a Block Test Result (Block Size=128):")
-    print("  Mean:", longest_run_mean)
+    print("Longest Run of Ones in a Block Test Result (Block Size=128):", longest_run_mean)
     print("Poker Test Result (Block Size=4):", poker_test_result)
     print("Shannon Entropy:", entropy_result)
 
-    conclusion = interpret_results(sequence, freq_result, runs_result, autocorr_result, longest_run_mean, poker_test_result, entropy_result)
-    print("Conclusion:", conclusion)
+    # conclusion = interpret_results(sequence, freq_result, runs_result, autocorr_result, longest_run_mean, poker_test_result, entropy_result)
+    # print("Conclusion:", conclusion)
 
 def main():
     parser = argparse.ArgumentParser(description="Randomness Test CLI")
-    parser.add_argument('-test', '--test', type=str, help='Binary sequence to test for randomness')
+    parser.add_argument('--test', type=str, help='Binary sequence to test for randomness')
+    parser.add_argument('--generate-champernowne', type=int, help='Generate Champernowne constant up to a length')
+    parser.add_argument('--generate-copeland-erdos', type=int, help='Generate Copeland-Erdös constant up to a length')
+    parser.add_argument('--generate-nonrandom', type=int, help='Generate a non-random binary string of a length')
+    parser.add_argument('--no-print-sequence', action='store_true', help='Do not print the sequence')
     args = parser.parse_args()
 
     if args.test:
-        analyze_sequence(args.test)
+        analyze_sequence(args.test, not args.no_print_sequence)
+    elif args.generate_champernowne:
+        sequence = generate_champernowne(args.generate_champernowne)
+        analyze_sequence(sequence, not args.no_print_sequence)
+    elif args.generate_copeland_erdos:
+        sequence = generate_copeland_erdos(args.generate_copeland_erdos)
+        analyze_sequence(sequence, not args.no_print_sequence)
+    elif args.generate_nonrandom:
+        sequence = generate_non_random_binary(args.generate_nonrandom)
+        analyze_sequence(sequence, not args.no_print_sequence)
     else:
         print("Randomness Test CLI")
-        print("Usage: python program.py --test 'BINARY_SEQUENCE'")
-        print("Example: python program.py --test '0101 0101'")
+        print("Usage: python problem_two.py --test 'BINARY_SEQUENCE'")
+        print("Example: python problem_two.py --test '0101 0101'")
+        print("Or generate sequences:")
+        print("python problem_two.py --generate-champernowne 100")
+        print("python problem_two.py --generate-copeland-erdos 100")
+        print("python problem_two.py --generate-nonrandom 100")
 
 if __name__ == "__main__":
     main()
