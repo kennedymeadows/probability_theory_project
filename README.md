@@ -45,7 +45,7 @@ I chose to include six different tests of random tests, each with their own stre
 This test measures the balance between the number of 0's and 1's. It is good at identifying sequences with a significant imbalance, but not effective for patterns or structural randomness
 
 $$
-\text{Frequency Score} = \frac{|\text{# of 1's} - \text{# of 0's}|}{\text{# of bits}}
+\text{Frequency Score} = \frac{|\text{number of 1's} - \text{number of 0's}|}{\text{number of bits}}
 $$
 
 #### Test 2: Runs Test
@@ -57,7 +57,7 @@ Evaluates the occurrences of uninterrupted sequences of identical bits. It is us
 Measures the correlation between the sequence and itself shifted by one position. This was one of the most effective tests for my non-random string generator as I currently have it set.
 
 $$
-\text{Autocorrelation} = \frac{\text{# matching bits at given shift}}{\text{# of comparisons}}
+\text{Autocorrelation} = \frac{\text{number matching bits at given shift}}{\text{number of comparisons}}
 $$
 
 #### Test 4: Longest Run of Ones in a Block Test
@@ -71,7 +71,7 @@ This test divides the sequence into blocks and finds the longest run of 1s in ea
 By far the most effective test for my non-random string generator. It correctly identified the non-random string as being non-random and the random strings as being random.
 
 $$
-\text{Poker Score} = (2^{\text{block size}}) \times \frac{\sum(\text{frequency of each block}^2)}{# of blocks} - # of blocks
+\text{Poker Score} = (2^{\text{block size}}) \times \frac{\sum(\text{frequency of each block}^2)}{number of blocks} - number of blocks
 $$
 
 #### Test 6: Shannon Entropy Test
